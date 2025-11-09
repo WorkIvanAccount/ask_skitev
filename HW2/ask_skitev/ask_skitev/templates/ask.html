@@ -1,0 +1,33 @@
+{% extends "layout/base.html" %}
+{% load static %}
+
+{% block content %}
+
+            <div>
+                <div>
+                    <h2>New Questions</h2>
+                </div>
+                <div class="d-flex flex-column mt-4">
+                    <div class="">
+                        <div class="d-flex flex-row align-items-center">
+                            <div class="d-flex align-items-center col-3"><h5 class="mb-0">Title</h5></div>
+                            <div class="invalid-feedback">Title is required and must be at least 100 characters.</div>
+                            <input maxlength="100" type="text" class="form-control col-9" placeholder="How to build a moon park?">
+                        </div>
+                    </div>
+                    <div class="mt-3" >
+                        <div class="d-flex flex-row">
+                            <div class="w-25"><h5 class="mb-0 col-3">Text</h5></div>
+                            <textarea maxlength="1000" rows="10" type="text" class="form-control col-9" placeholder="Really, how?"></textarea>
+                        </div>
+                    </div>
+                    <div class="mt-3" >
+                        <div class="d-flex flex-row align-items-center">
+                            <div class="d-flex align-items-center col-3"><h5 class="mb-0">Tags</h5></div>
+                            <input maxlength="100" type="text" class="form-control col-9" placeholder="moon, park">
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-lg border btn-outline-primary mt-3" style="margin-left: 25%;">ASK!</button>
+            </div>
+{% endblock %}

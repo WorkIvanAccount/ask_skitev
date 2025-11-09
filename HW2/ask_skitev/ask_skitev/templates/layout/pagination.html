@@ -1,0 +1,52 @@
+<div class="d-flex flex-row">
+    {% with current_page=page_obj.number total_pages=page_obj.paginator.num_pages %}
+    {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}"
+    class="border d-flex justify-content-center align-items-center" 
+    style="width: 40px; height: 40px; cursor: pointer;">Prev</a>
+    {% endif %}
+
+    {% if current_page > 2 and total_pages > 4 %}
+        <a href="?page=1" 
+        class="border d-flex justify-content-center align-items-center p-2 ml-2" 
+        style="width: 40px; height: 40px; cursor: pointer;">1</a>
+    {% endif %}
+
+    {% if current_page > 3 and total_pages > 5 %}
+    <span class="border d-flex justify-content-center align-items-center p-2 ml-2" 
+        style="width: 40px; height: 40px; pointer-events: none;">...</span>
+    {% endif %}
+
+    {% for i in page_obj.paginator.page_range %}
+        {% if i >= current_page|add:"-1" and i <= current_page|add:"1" %}
+            {% if i == current_page %}
+            <a class="border d-flex justify-content-center align-items-center p-2 ml-2 active-page" 
+            style="width: 40px; height: 40px; cursor: pointer;">{{ i }}</a>
+            {% else %}
+
+            <a href="?page={{ i }}" 
+            class="border d-flex justify-content-center align-items-center p-2 ml-2" 
+            style="width: 40px; height: 40px; cursor: pointer;">{{ i }}
+            </a>{% endif %}
+        {% endif %}
+    {% endfor %}
+
+    {% if current_page < total_pages|add:"-2" and total_pages > 5 %}
+    <span class="border d-flex justify-content-center align-items-center p-2 ml-2" 
+        style="width: 40px; height: 40px; pointer-events: none;">...</span>
+    {% endif %}
+
+    {% if current_page < total_pages|add:"-1" and total_pages > 4 %}
+    <a href="?page={{ total_pages }}" 
+    class="border d-flex justify-content-center align-items-center p-2 ml-2" 
+    style="width: 40px; height: 40px; cursor: pointer;">{{ total_pages }}</a>
+    {% endif %}
+    
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}" 
+    class="border d-flex justify-content-center align-items-center p-2 ml-2" 
+    style="width: 40px; height: 40px; cursor: pointer;">Next</a>
+    {% endif %}
+
+    {% endwith %}
+</div>
