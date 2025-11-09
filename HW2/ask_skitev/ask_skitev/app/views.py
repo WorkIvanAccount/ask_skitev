@@ -38,6 +38,7 @@ def hot(request):
     page = paginate(QUESTIONS, request, per_page=3)
 
     return render(request, 'hotquestion.html', context={
+        'questions' : page.object_list,
         'page_obj' : page
     })
 
@@ -52,10 +53,14 @@ def settings(request):
     return render(request, 'settings.html')
 
 
+
 def question(request):
+    current_question = QUESTIONS[0]
+
     page = paginate(ANSWERS, request, per_page=2)
 
     return render(request, 'question.html', context={
+        'question' : current_question, 
         'answers' : page.object_list,
         'page_obj' : page
     })
