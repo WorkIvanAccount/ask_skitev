@@ -54,8 +54,8 @@ def settings(request):
 
 
 
-def question(request):
-    current_question = QUESTIONS[0]
+def question(request, question_id):
+    current_question = QUESTIONS[question_id]
 
     page = paginate(ANSWERS, request, per_page=2)
 
