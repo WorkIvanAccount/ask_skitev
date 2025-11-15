@@ -10,9 +10,7 @@ class QuestionManager(models.Manager):
         return self.get_queryset().order_by('-created_at')
     
     def hot(self):
-        return self.get_queryset().annotate(
-            likes_count=models.Count('likes')
-        ).order_by('-likes_count')
+        return self.get_queryset().annotate(likes_count=models.Count('likes')).order_by('-likes_count')
 
 
 # 1. Profile
@@ -47,6 +45,11 @@ class Question(models.Model):
 
     def __str__(self):
         return self.title
+    def get_url(self):
+        return f"/question/{self.id}/"
+    def likes_count(self):
+        return self.likes.count()
+
 
 
 # 4. Answer
@@ -61,6 +64,8 @@ class Answer(models.Model):
 
     def __str__(self):
         return self.text[:50]
+    def likes_count(self):
+        return self.likes.count()
 
 
 # 5. Лайки

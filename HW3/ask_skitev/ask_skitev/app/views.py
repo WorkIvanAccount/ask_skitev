@@ -4,17 +4,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from app.models import Question, QuestionLike, Profile, Answer, AnswerLike
 
-QUESTIONS = [{
-    'id' : i,
-    'title' : f'Title #{i}',
-    'text' : 'Text',
-} for i in range(30)]
 
-ANSWERS = [{
-    'id' : i,
-    'text' : f'Text #{i}',
-    'correct' : 'Correct',
-} for i in range(15)]
 
 
 
@@ -32,7 +22,8 @@ def paginate(objects_list, request, per_page=10):
     return page
 
 def index(request):
-    questions = Question.objects.all()
+    questions = Question.objects.new()
+
     page = paginate(questions, request)
 
     return render(request, 'index.html', context={
@@ -41,7 +32,7 @@ def index(request):
     })
 
 def hot(request):
-    questions = Question.objects.hot()  # ← используй менеджер!
+    questions = Question.objects.hot()  
     page = paginate(questions, request, per_page=3)
     return render(request, 'hotquestion.html', {
         'questions': page.object_list,
@@ -61,9 +52,10 @@ def settings(request):
 
 
 def question(request, question_id):
-    current_question = Question.objects.get(id=question_id)
+    current_question = get_object_or_404(Question, id=question_id)
     answers = current_question.answer_set.all()
     page = paginate(answers, request, per_page=5)
+    
 
     return render(request, 'question.html', {
         'question': current_question,
@@ -85,16 +77,14 @@ def like_question(request, question_id):
         like.delete()
     
     return redirect(request.META.get('HTTP_REFERER', '/'))
-
 @login_required
 def like_answer(request, answer_id):
     answer = get_object_or_404(Answer, id=answer_id)
-    profile = request.user.profile  # если у User есть related_name='profile'
+    profile = request.user.profile 
 
     like, created = AnswerLike.objects.get_or_create(user=profile, answer=answer)
 
     if not created:
-        # Лайк уже был → снимаем
         like.delete()
 
     return redirect(request.META.get('HTTP_REFERER', '/'))

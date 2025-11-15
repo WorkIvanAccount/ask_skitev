@@ -33,7 +33,7 @@
                 <form class="" action="{% url 'like_question' question.id %}" method="post">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-sm btn-outline-primary">
-                        👍 {{ question.likes.count }}
+                        👍 {{ question.likes_count }}
                     </button>
                 </form>
             </div>
