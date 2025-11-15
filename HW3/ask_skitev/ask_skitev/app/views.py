@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
-from app.models import Question, Answer
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from app.models import Question, QuestionLike, Profile, Answer, AnswerLike
 
 QUESTIONS = [{
     'id' : i,
@@ -69,3 +70,31 @@ def question(request, question_id):
         'answers': page.object_list,
         'page_obj': page
     })
+
+
+
+
+@login_required
+def like_question(request, question_id):
+    question = get_object_or_404(Question, id=question_id)
+    profile = request.user.profile
+    
+    like, created = QuestionLike.objects.get_or_create(user=profile, question=question)
+    
+    if not created:
+        like.delete()
+    
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+
+@login_required
+def like_answer(request, answer_id):
+    answer = get_object_or_404(Answer, id=answer_id)
+    profile = request.user.profile  # если у User есть related_name='profile'
+
+    like, created = AnswerLike.objects.get_or_create(user=profile, answer=answer)
+
+    if not created:
+        # Лайк уже был → снимаем
+        like.delete()
+
+    return redirect(request.META.get('HTTP_REFERER', '/'))
