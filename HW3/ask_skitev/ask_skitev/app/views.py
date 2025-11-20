@@ -2,10 +2,8 @@ from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from app.models import Question, QuestionLike, Profile, Answer, AnswerLike
-
-
-
+from django.db import models
+from app.models import Question, QuestionLike, Profile, Answer, AnswerLike, Tag
 
 
 def paginate(objects_list, request, per_page=10):
@@ -22,21 +20,38 @@ def paginate(objects_list, request, per_page=10):
     return page
 
 def index(request):
-    questions = Question.objects.new()
+    tag_name = request.GET.get("tag")
+
+    if tag_name:
+        questions = Question.objects.by_tag(tag_name)
+    else:
+        questions = Question.objects.new()
 
     page = paginate(questions, request)
 
-    return render(request, 'index.html', context={
-        'questions' : page.object_list,
-        'page_obj' : page
+    popular_tags = Tag.objects.annotate(
+        num_questions=models.Count('question')
+    ).order_by('-num_questions')[:15]
+
+    return render(request, 'index.html', {
+        'questions': page.object_list,
+        'page_obj': page,
+        'tags': popular_tags,
+        'active_tag': tag_name,
     })
+
+
 
 def hot(request):
     questions = Question.objects.hot()  
     page = paginate(questions, request, per_page=3)
+
+    popular_tags = Tag.objects.annotate(num_questions=models.Count('question')).order_by('-num_questions')[:15]
+
     return render(request, 'hotquestion.html', {
+        'page_obj': page,
         'questions': page.object_list,
-        'page_obj': page
+        'tags': popular_tags,
     })
 
 
