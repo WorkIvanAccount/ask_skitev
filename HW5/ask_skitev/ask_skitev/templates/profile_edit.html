@@ -1,0 +1,45 @@
+<!-- profile_edit.html -->
+{% extends "layout/base.html" %}
+{% load static %}
+
+{% block content %}
+<div>
+    <h2 class="mb-4">Edit Profile</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label class="form-label">Username</label>
+            {{ uform.username }}
+            {{ uform.username.errors }}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            {{ uform.email }}
+            {{ uform.email.errors }}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Avatar</label>
+            {% if request.user.profile.avatar %}
+                <div class="mb-2">
+                    <img src="{{ request.user.profile.avatar.url }}"
+                        alt="Avatar"
+                        style="width: 80px; height: 80px; object-fit: cover; border-radius: 50%;">
+                </div>
+            {% else %}
+                <div class="mb-2 text-muted">Нет аватара</div>
+            {% endif %}
+            {{ pform.avatar }}
+            {{ pform.avatar.errors }}
+            <small class="form-text text-muted">
+                Поддерживаются: JPG, PNG. Макс. размер — обычно 2.5 MB (зависит от сервера).
+            </small>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
+{% endblock %}
