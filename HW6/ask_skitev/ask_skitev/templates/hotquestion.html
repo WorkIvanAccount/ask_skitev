@@ -1,0 +1,24 @@
+{% extends "layout/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="questions-section">
+    <div class="d-flex justify-content-between align-items-center">
+        <h2>Hot Questions</h2>
+        <a href="{% url 'index' %}" class="btn btn-sm btn-outline-danger">New Questions</a>
+    </div>
+    <div class="d-flex flex-column">
+        {% for question in questions %}
+
+            {% include "layout/one_question.html" with question=question %}
+            
+
+        {% endfor %}
+    </div>
+    <div class="mt-4">
+
+            {% include "layout/pagination.html" %}
+
+    </div>
+</div>
+{% endblock %}

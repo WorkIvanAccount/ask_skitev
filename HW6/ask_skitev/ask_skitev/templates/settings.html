@@ -1,0 +1,48 @@
+{% extends "layout/base.html" %}
+{% load static %}
+
+{% block content %}
+<div>
+    <h2 class="mb-4">Settings</h2>
+
+    <form>
+        <div class="mb-3 row">
+            <label for="login" class="col-sm-3 col-form-label">Login</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="login">
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="email" class="col-sm-3 col-form-label">Email</label>
+            <div class="col-sm-9">
+                <input type="email" class="form-control" id="email">
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="nickname" class="col-sm-3 col-form-label">NickName</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="nickname">
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="avatar" class="col-sm-3 col-form-label">Upload avatar</label>
+            <div class="col-sm-9">
+                <div class="d-flex align-items-center mb-2">
+                    <img src="../static/img/avatar-placeholder.png" alt="Avatar" class="me-3" style="width: 100px; height: 100px; object-fit: cover; border: 2px solid #ddd;">
+                </div>
+                <input type="file" class="form-control" id="avatar">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-9 offset-sm-3">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+{% endblock %}
